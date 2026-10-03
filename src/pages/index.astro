@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import CustomCursor from "../components/CustomCursor";
 import HeroSection from "../components/HeroSection";
 import PracticeModal from "../components/PracticeModal";
+import RoundExplorer from "../components/RoundExplorer";
 import { rounds } from "../data/rounds";
 import { lps } from "../data/lps";
 import "../styles/global.css";
@@ -61,10 +62,11 @@ const lpNames = lps.map(l => l.name);
 
     <div class="bento-grid">
       {rounds.map((round, i) => (
-        <a href={`#round-${round.slug}`} class={`tilt-card bento-r${i+1}`}
+        <a href="#round-explorer" class={`tilt-card bento-r${i+1}`}
           style={`display:block;text-decoration:none;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);background:radial-gradient(ellipse 120% 80% at 0% 0%,${round.bgGlow},transparent),#0c0c14;padding:${i===0?'40px':'28px'} 28px;transition:border-color 0.25s;position:relative;`}
           onmouseover={`this.style.borderColor='${round.color}44'`}
           onmouseout={`this.style.borderColor='rgba(255,255,255,0.07)'`}
+          data-round-index={i}
           data-tilt>
           <!-- Shimmer line top -->
           <div style={`position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${round.color}44,transparent);`}></div>
@@ -87,49 +89,17 @@ const lpNames = lps.map(l => l.name);
   <!-- ═══ DIVIDER ════════════════════════════════════════════════ -->
   <div style="max-width:1280px;margin:0 auto;padding:0 64px;"><div class="divline"></div></div>
 
-  <!-- ═══ PER-ROUND ACCORDIONS ══════════════════════════════════ -->
-  {rounds.map((round) => (
-    <section id={`round-${round.slug}`} style="position:relative;z-index:1;padding:72px 64px;max-width:1280px;margin:0 auto;" class="reveal">
-      <div style="display:grid;grid-template-columns:280px 1fr;gap:48px;align-items:start;">
-        <!-- Left sticky label -->
-        <div style="position:sticky;top:96px;">
-          <span style="font-size:32px;">{round.icon}</span>
-          <span class="section-tag" style={`display:inline-flex;margin-top:14px;color:${round.color};border-color:${round.color}44;background:${round.bgGlow};`}>Round {round.id}</span>
-          <h3 style={`font-family:var(--font-heading);font-size:28px;font-weight:800;letter-spacing:-0.02em;color:${round.color};margin-top:10px;line-height:1.15;`}>{round.name}</h3>
-          <p style="color:rgba(238,238,248,0.4);margin-top:8px;font-size:13px;line-height:1.7;">{round.description}</p>
-          <div style={`margin-top:16px;padding:10px 14px;background:${round.bgGlow.replace('0.12','0.06')};border:1px solid ${round.color}22;border-radius:10px;`}>
-            <span style={`font-family:var(--font-mono);font-size:11px;color:${round.color}88;`}>{round.questions.length} questions · {Math.floor(round.timeLimit/60)}m each</span>
-          </div>
-        </div>
-        <!-- Right questions -->
-        <div>
-          <div class="foldable" data-show="3" style="display:flex;flex-direction:column;gap:8px;">
-            {round.questions.map((q, qi) => (
-              <details style={`background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;`} class="q-card fold-item">
-                <summary style="list-style:none;padding:18px 20px;cursor:none;display:flex;align-items:flex-start;gap:14px;">
-                  <span style={`font-family:var(--font-mono);font-size:10px;color:${round.color}66;padding-top:4px;flex-shrink:0;min-width:22px;`}>{String(qi+1).padStart(2,'0')}</span>
-                  <span style="font-family:var(--font-heading);font-size:15px;font-weight:600;color:#eeeef8;flex:1;line-height:1.55;">{q.question}</span>
-                  <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" style={`flex-shrink:0;margin-top:4px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);color:${round.color};`}><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </summary>
-                <div style="padding:4px 20px 20px 56px;">
-                  <div style={`background:${round.bgGlow.replace('0.12','0.07')};border:1px solid ${round.color}1a;border-radius:10px;padding:16px;margin-bottom:12px;`}>
-                    <p style="font-size:13px;color:rgba(238,238,248,0.65);line-height:1.75;">{q.hint}</p>
-                    {q.framework && <p style="font-size:12px;color:#FF9900;font-family:var(--font-mono);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,153,0,0.12);">Framework: {q.framework}</p>}
-                  </div>
-                  <div style="display:flex;flex-wrap:wrap;gap:5px;">
-                    {q.tags.map(tag => (
-                      <span style={`font-size:9px;font-family:var(--font-heading);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${round.color};padding:3px 9px;border-radius:100px;border:1px solid ${round.color}2a;background:${round.color}0d;`}>{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
-          <button class="fold-toggle" style={`margin-top:12px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;color:rgba(238,238,248,0.4);font-family:var(--font-heading);font-size:12px;font-weight:600;letter-spacing:0.04em;cursor:none;transition:color 0.2s,border-color 0.2s;`} onmouseover="this.style.color='#eeeef8';this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.color='rgba(238,238,248,0.4)';this.style.borderColor='rgba(255,255,255,0.08)'"></button>
-        </div>
+  <!-- ═══ ROUND EXPLORER (tabbed) ═══════════════════════════════ -->
+  <section style="position:relative;z-index:1;padding:80px 64px;max-width:1280px;margin:0 auto;" class="reveal">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:20px;">
+      <div>
+        <span class="section-tag">Questions</span>
+        <h2 style="font-family:var(--font-heading);font-size:clamp(28px,3.5vw,44px);font-weight:900;letter-spacing:-0.03em;margin-top:14px;line-height:1.05;">Explore every round.</h2>
       </div>
-    </section>
-  ))}
+      <p style="color:rgba(238,238,248,0.35);font-size:13px;max-width:280px;line-height:1.7;text-align:right;">Switch rounds with one click. No scrolling between sections.</p>
+    </div>
+    <RoundExplorer client:only="react" />
+  </section>
 
   <!-- ═══ DIVIDER ════════════════════════════════════════════════ -->
   <div style="max-width:1280px;margin:0 auto;padding:0 64px;"><div class="divline"></div></div>
@@ -285,6 +255,15 @@ const lpNames = lps.map(l => l.name);
 </BaseLayout>
 
 <script>
+  // Bento card → switch round tab
+  document.querySelectorAll<HTMLElement>("[data-round-index]").forEach(card => {
+    card.addEventListener("click", e => {
+      e.preventDefault();
+      const idx = parseInt(card.dataset.roundIndex ?? "0");
+      window.dispatchEvent(new CustomEvent("roundchange", { detail: { index: idx } }));
+    });
+  });
+
   // Fold / show-more
   document.querySelectorAll<HTMLElement>(".foldable").forEach(container => {
     const show = parseInt(container.dataset.show ?? "3");
