@@ -102,27 +102,30 @@ const lpNames = lps.map(l => l.name);
           </div>
         </div>
         <!-- Right questions -->
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          {round.questions.map((q, qi) => (
-            <details style={`background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;`} class="q-card">
-              <summary style="list-style:none;padding:18px 20px;cursor:none;display:flex;align-items:flex-start;gap:14px;">
-                <span style={`font-family:var(--font-mono);font-size:10px;color:${round.color}66;padding-top:4px;flex-shrink:0;min-width:22px;`}>{String(qi+1).padStart(2,'0')}</span>
-                <span style="font-family:var(--font-heading);font-size:15px;font-weight:600;color:#eeeef8;flex:1;line-height:1.55;">{q.question}</span>
-                <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" style={`flex-shrink:0;margin-top:4px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);color:${round.color};`}><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </summary>
-              <div style="padding:4px 20px 20px 56px;">
-                <div style={`background:${round.bgGlow.replace('0.12','0.07')};border:1px solid ${round.color}1a;border-radius:10px;padding:16px;margin-bottom:12px;`}>
-                  <p style="font-size:13px;color:rgba(238,238,248,0.65);line-height:1.75;">{q.hint}</p>
-                  {q.framework && <p style="font-size:12px;color:#FF9900;font-family:var(--font-mono);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,153,0,0.12);">Framework: {q.framework}</p>}
+        <div>
+          <div class="foldable" data-show="3" style="display:flex;flex-direction:column;gap:8px;">
+            {round.questions.map((q, qi) => (
+              <details style={`background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;`} class="q-card fold-item">
+                <summary style="list-style:none;padding:18px 20px;cursor:none;display:flex;align-items:flex-start;gap:14px;">
+                  <span style={`font-family:var(--font-mono);font-size:10px;color:${round.color}66;padding-top:4px;flex-shrink:0;min-width:22px;`}>{String(qi+1).padStart(2,'0')}</span>
+                  <span style="font-family:var(--font-heading);font-size:15px;font-weight:600;color:#eeeef8;flex:1;line-height:1.55;">{q.question}</span>
+                  <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" style={`flex-shrink:0;margin-top:4px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);color:${round.color};`}><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </summary>
+                <div style="padding:4px 20px 20px 56px;">
+                  <div style={`background:${round.bgGlow.replace('0.12','0.07')};border:1px solid ${round.color}1a;border-radius:10px;padding:16px;margin-bottom:12px;`}>
+                    <p style="font-size:13px;color:rgba(238,238,248,0.65);line-height:1.75;">{q.hint}</p>
+                    {q.framework && <p style="font-size:12px;color:#FF9900;font-family:var(--font-mono);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,153,0,0.12);">Framework: {q.framework}</p>}
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px;">
+                    {q.tags.map(tag => (
+                      <span style={`font-size:9px;font-family:var(--font-heading);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${round.color};padding:3px 9px;border-radius:100px;border:1px solid ${round.color}2a;background:${round.color}0d;`}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:5px;">
-                  {q.tags.map(tag => (
-                    <span style={`font-size:9px;font-family:var(--font-heading);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${round.color};padding:3px 9px;border-radius:100px;border:1px solid ${round.color}2a;background:${round.color}0d;`}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </details>
-          ))}
+              </details>
+            ))}
+          </div>
+          <button class="fold-toggle" style={`margin-top:12px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;color:rgba(238,238,248,0.4);font-family:var(--font-heading);font-size:12px;font-weight:600;letter-spacing:0.04em;cursor:none;transition:color 0.2s,border-color 0.2s;`} onmouseover="this.style.color='#eeeef8';this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.color='rgba(238,238,248,0.4)';this.style.borderColor='rgba(255,255,255,0.08)'"></button>
         </div>
       </div>
     </section>
@@ -141,9 +144,9 @@ const lpNames = lps.map(l => l.name);
       <p style="color:rgba(238,238,248,0.35);font-size:14px;max-width:300px;line-height:1.7;text-align:right;">Every behavioral question is an LP in disguise. Know the nuance, not just the name.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+    <div class="foldable" data-show="6" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
       {lps.map(lp => (
-        <details style="background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;" class="lp-card">
+        <details style="background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;" class="lp-card fold-item">
           <summary style="list-style:none;padding:20px 22px;cursor:none;display:flex;align-items:flex-start;gap:12px;">
             <span style="font-family:var(--font-mono);font-size:10px;color:rgba(255,153,0,0.4);padding-top:4px;flex-shrink:0;min-width:22px;">{String(lp.id).padStart(2,'0')}</span>
             <div style="flex:1;min-width:0;">
@@ -168,6 +171,7 @@ const lpNames = lps.map(l => l.name);
         </details>
       ))}
     </div>
+    <button class="fold-toggle" style="margin-top:16px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;color:rgba(238,238,248,0.4);font-family:var(--font-heading);font-size:12px;font-weight:600;letter-spacing:0.04em;cursor:none;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='#eeeef8';this.style.borderColor='rgba(255,255,255,0.18)'" onmouseout="this.style.color='rgba(238,238,248,0.4)';this.style.borderColor='rgba(255,255,255,0.08)'"></button>
   </section>
 
   <!-- ═══ DIVIDER ════════════════════════════════════════════════ -->
@@ -203,24 +207,26 @@ const lpNames = lps.map(l => l.name);
       </div>
     </div>
 
-    <!-- Concepts grid -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-      {[
-        {i:"⚡",l:"CAP Theorem",d:"Pick two: Consistency, Availability, Partition Tolerance. Know your trade-off before the whiteboard."},
-        {i:"🔑",l:"Consistent Hashing",d:"Distribute data with minimal reshuffling when nodes join or leave. Essential for distributed caches."},
-        {i:"📦",l:"Event Sourcing",d:"Store state as immutable events. Enables audit, replay, decoupled consumers. Great for order systems."},
-        {i:"🔄",l:"CQRS",d:"Separate read/write models. Optimize each path independently — critical at Amazon's traffic levels."},
-        {i:"🛡️",l:"Circuit Breaker",d:"Fail fast when downstream is down. Prevents cascading failure across your microservice graph."},
-        {i:"📊",l:"Rate Limiting",d:"Token bucket, leaky bucket, sliding window — know each algorithm and when to use which."},
-        {i:"🗂️",l:"Database Sharding",d:"Horizontal partition data. Eliminates single-node limits but adds cross-shard query complexity."},
-        {i:"🌐",l:"CDN Strategy",d:"Push static assets to the edge. Dramatically reduces origin load and latency for global users."},
-      ].map(c => (
-        <div style="padding:18px;background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.06);border-radius:14px;transition:border-color 0.2s,background 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(255,153,0,0.3)';this.style.background='rgba(255,153,0,0.035)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='rgba(255,255,255,0.018)';this.style.transform='none'">
-          <div style="font-size:18px;margin-bottom:8px;">{c.i}</div>
-          <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:#eeeef8;margin-bottom:6px;">{c.l}</div>
-          <p style="font-size:12px;color:rgba(238,238,248,0.38);line-height:1.6;">{c.d}</p>
-        </div>
-      ))}
+    <!-- Concepts horizontal scroll -->
+    <div class="h-scroll-outer">
+      <div class="h-scroll-track">
+        {[
+          {i:"⚡",l:"CAP Theorem",d:"Pick two: Consistency, Availability, Partition Tolerance. Know your trade-off before the whiteboard.",c:"#FF9900"},
+          {i:"🔑",l:"Consistent Hashing",d:"Distribute data with minimal reshuffling when nodes join or leave. Essential for distributed caches.",c:"#f87171"},
+          {i:"📦",l:"Event Sourcing",d:"Store state as immutable events. Enables audit, replay, decoupled consumers. Great for order systems.",c:"#818cf8"},
+          {i:"🔄",l:"CQRS",d:"Separate read/write models. Optimize each path independently — critical at Amazon's traffic levels.",c:"#2dd4bf"},
+          {i:"🛡️",l:"Circuit Breaker",d:"Fail fast when downstream is down. Prevents cascading failure across your microservice graph.",c:"#4ade80"},
+          {i:"📊",l:"Rate Limiting",d:"Token bucket, leaky bucket, sliding window — know each algorithm and when to use which.",c:"#fbbf24"},
+          {i:"🗂️",l:"Database Sharding",d:"Horizontal partition data. Eliminates single-node limits but adds cross-shard query complexity.",c:"#f87171"},
+          {i:"🌐",l:"CDN Strategy",d:"Push static assets to the edge. Dramatically reduces origin load and latency for global users.",c:"#818cf8"},
+        ].map(c => (
+          <div class="h-scroll-card" style={`border-top:2px solid ${c.c}55;width:240px;`}>
+            <div style="font-size:20px;margin-bottom:10px;">{c.i}</div>
+            <div style={`font-family:var(--font-heading);font-weight:700;font-size:13px;color:${c.c};margin-bottom:8px;`}>{c.l}</div>
+            <p style="font-size:12px;color:rgba(238,238,248,0.38);line-height:1.65;">{c.d}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -254,19 +260,6 @@ const lpNames = lps.map(l => l.name);
       ))}
     </div>
 
-    <!-- Framework cards -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-      {[
-        {name:"STAR Method",color:"#FF9900",accent:"rgba(255,153,0,0.06)",desc:"Situation · Task · Action · Result. The universal behavioral interview format. Make Result 2× as long as everything else combined."},
-        {name:"CIRCLES Framework",color:"#f87171",accent:"rgba(248,113,113,0.06)",desc:"Comprehend → Identify customers → Report needs → Cut scope → List solutions → Evaluate trade-offs → Summarize. PM product design gold."},
-        {name:"Working Backwards",color:"#818cf8",accent:"rgba(129,140,248,0.06)",desc:"Write the press release first. Define the ideal customer experience before touching any architecture. Amazon's process from the outside in."},
-      ].map(f => (
-        <div style={`padding:24px;background:${f.accent};border:1px solid rgba(255,255,255,0.06);border-left:2px solid ${f.color}88;border-radius:14px;`}>
-          <div style={`font-family:var(--font-heading);font-weight:800;font-size:15px;color:${f.color};margin-bottom:10px;`}>{f.name}</div>
-          <p style="font-size:13px;color:rgba(238,238,248,0.45);line-height:1.7;">{f.desc}</p>
-        </div>
-      ))}
-    </div>
   </section>
 
   <!-- ═══ CTA ════════════════════════════════════════════════════ -->
@@ -292,6 +285,30 @@ const lpNames = lps.map(l => l.name);
 </BaseLayout>
 
 <script>
+  // Fold / show-more
+  document.querySelectorAll<HTMLElement>(".foldable").forEach(container => {
+    const show = parseInt(container.dataset.show ?? "3");
+    const items = Array.from(container.querySelectorAll<HTMLElement>(".fold-item"));
+    if (items.length <= show) return;
+
+    // Hide items beyond threshold
+    items.slice(show).forEach(el => { el.style.display = "none"; });
+
+    // Find the next sibling button
+    const btn = container.nextElementSibling as HTMLButtonElement | null;
+    if (!btn || !btn.classList.contains("fold-toggle")) return;
+
+    const hidden = items.length - show;
+    btn.textContent = `Show ${hidden} more →`;
+
+    let expanded = false;
+    btn.addEventListener("click", () => {
+      expanded = !expanded;
+      items.slice(show).forEach(el => { el.style.display = expanded ? "" : "none"; });
+      btn.textContent = expanded ? "Show less ↑" : `Show ${hidden} more →`;
+    });
+  });
+
   // Scroll reveal
   const revealEls = document.querySelectorAll<HTMLElement>(".reveal");
   const obs = new IntersectionObserver(
