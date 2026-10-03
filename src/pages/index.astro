@@ -1,0 +1,290 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StarField from "../components/StarField";
+import PracticeModal from "../components/PracticeModal";
+import { rounds } from "../data/rounds";
+import { lps } from "../data/lps";
+import "../styles/global.css";
+---
+
+<BaseLayout>
+  <!-- Canvas star field -->
+  <StarField client:only="react" />
+
+  <!-- ═══════════════════════════════════════ NAV -->
+  <nav id="nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,10,0.6);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.3s;">
+    <a href="#hero" style="font-family:var(--font-heading);font-weight:800;font-size:16px;color:#eeeef8;text-decoration:none;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px;">
+      <span style="color:#FF9900;">⬡</span> TPM Prep
+    </a>
+    <div style="display:flex;align-items:center;gap:4px;">
+      {["Rounds","Principles","Design","Resources"].map(label => (
+        <a href={`#${label.toLowerCase()}`} style="font-size:13px;color:rgba(238,238,248,0.55);text-decoration:none;padding:6px 12px;border-radius:8px;transition:color 0.2s;font-family:var(--font-heading);font-weight:500;" onmouseover="this.style.color='#eeeef8';this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.color='rgba(238,238,248,0.55)';this.style.background='none'">{label}</a>
+      ))}
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════ HERO -->
+  <section id="hero" class="hero-bg" style="position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;z-index:1;overflow:hidden;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.025;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
+      <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="100%" height="100%" filter="url(#noise)"/>
+    </svg>
+
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 10px;border-radius:100px;background:rgba(255,153,0,0.08);border:1px solid rgba(255,153,0,0.2);margin-bottom:32px;font-family:var(--font-heading);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,153,0,0.9);">
+      <span style="width:7px;height:7px;border-radius:50%;background:#FF9900;" class="breathe"></span>
+      Amazon TPM &middot; 2025 Edition
+    </div>
+
+    <h1 style="font-family:var(--font-heading);font-size:clamp(44px,7vw,88px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;margin-bottom:24px;max-width:900px;">
+      Land the<br/>
+      <span class="gradient-text">Amazon TPM</span><br/>
+      you&rsquo;re built for.
+    </h1>
+
+    <p style="font-size:clamp(15px,2vw,18px);color:rgba(238,238,248,0.55);max-width:520px;line-height:1.7;margin-bottom:48px;">
+      Six interview rounds. 16 Leadership Principles. System design deep-dives. A practice mode that simulates real interviews &mdash; with timers, hints, and self-rating.
+    </p>
+
+    <PracticeModal client:only="react" />
+
+    <div style="display:grid;grid-template-columns:repeat(4,auto);gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;margin-top:64px;">
+      {[["6","Interview Rounds"],["50+","Practice Questions"],["16","Leadership Principles"],["&infin;","Practice Sessions"]].map(([n,l]) => (
+        <div style="padding:20px 32px;background:#06060a;text-align:center;">
+          <div style="font-family:var(--font-heading);font-size:28px;font-weight:800;color:#FF9900;" set:html={n}></div>
+          <div style="font-size:11px;color:rgba(238,238,248,0.4);font-family:var(--font-heading);font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px;">{l}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="divline" style="max-width:1200px;margin:0 auto;"></div>
+
+  <!-- ═══════════════════════════════════════ ROUNDS OVERVIEW -->
+  <section id="rounds" style="position:relative;z-index:1;padding:96px 24px;max-width:1200px;margin:0 auto;" class="reveal">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-tag">The Interview Process</span>
+      <h2 style="font-family:var(--font-heading);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-0.025em;margin-top:16px;">Six rounds to master.</h2>
+      <p style="color:rgba(238,238,248,0.45);margin-top:12px;font-size:16px;max-width:480px;margin-left:auto;margin-right:auto;">Each round tests a different dimension. Click a card to jump to its content, or launch practice mode.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;">
+      {rounds.map(round => (
+        <a href={`#round-${round.slug}`} style={`display:block;padding:32px 28px;background:radial-gradient(ellipse 100% 80% at 0% 0%,${round.bgGlow},transparent),#0c0c14;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.25s;position:relative;overflow:hidden;`}
+          onmouseover={`this.style.background='radial-gradient(ellipse 100% 80% at 0% 0%,${round.bgGlow.replace("0.12","0.22")},transparent),#10101a'`}
+          onmouseout={`this.style.background='radial-gradient(ellipse 100% 80% at 0% 0%,${round.bgGlow},transparent),#0c0c14'`}>
+          <div style="font-size:28px;margin-bottom:12px;">{round.icon}</div>
+          <div style={`font-family:var(--font-heading);font-weight:700;font-size:17px;color:${round.color};margin-bottom:8px;`}>{round.name}</div>
+          <p style="font-size:13px;color:rgba(238,238,248,0.45);line-height:1.6;">{round.description}</p>
+          <div style={`margin-top:16px;font-size:11px;color:${round.color}99;font-family:var(--font-heading);font-weight:600;`}>{round.questions.length} questions &rarr;</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div class="divline" style="max-width:1200px;margin:0 auto;"></div>
+
+  <!-- ═══════════════════════════════════════ PER-ROUND DEEP DIVES -->
+  {rounds.map((round) => (
+    <section id={`round-${round.slug}`} style="position:relative;z-index:1;padding:80px 24px;max-width:1200px;margin:0 auto;" class="reveal">
+      <div style="display:flex;align-items:flex-start;gap:24px;margin-bottom:40px;flex-wrap:wrap;">
+        <span style="font-size:36px;line-height:1;">{round.icon}</span>
+        <div>
+          <span class="section-tag" style={`color:${round.color};border-color:${round.color}44;background:${round.bgGlow};`}>Round {round.id}</span>
+          <h2 style={`font-family:var(--font-heading);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.025em;color:${round.color};margin-top:12px;`}>{round.name}</h2>
+          <p style="color:rgba(238,238,248,0.5);margin-top:8px;max-width:560px;">{round.description}</p>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        {round.questions.map((q, qi) => (
+          <details style={`background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;`} class="q-card">
+            <summary style="list-style:none;padding:18px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;">
+              <span style={`font-family:var(--font-mono);font-size:11px;color:${round.color}88;padding-top:4px;flex-shrink:0;min-width:20px;`}>{String(qi+1).padStart(2,'0')}</span>
+              <span style="font-family:var(--font-heading);font-size:15px;font-weight:600;color:#eeeef8;flex:1;line-height:1.5;">{q.question}</span>
+              <span style={`font-size:18px;color:${round.color};flex-shrink:0;transition:transform 0.25s;`} class="chevron">&or;</span>
+            </summary>
+            <div style={`padding:0 20px 20px 54px;border-top:1px solid rgba(255,255,255,0.05);`}>
+              <div style={`background:${round.bgGlow.replace("0.12","0.08")};border:1px solid ${round.color}22;border-radius:10px;padding:16px;margin-bottom:12px;margin-top:16px;`}>
+                <p style="font-size:13px;color:rgba(238,238,248,0.7);line-height:1.7;">{q.hint}</p>
+                {q.framework && <p style="font-size:12px;color:#FF9900;font-family:var(--font-mono);margin-top:10px;">Framework: {q.framework}</p>}
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                {q.tags.map(tag => (
+                  <span style={`font-size:10px;font-family:var(--font-heading);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:${round.color};padding:3px 9px;border-radius:100px;border:1px solid ${round.color}33;background:${round.color}0f;`}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <div class="divline" style="max-width:1200px;margin:0 auto;"></div>
+
+  <!-- ═══════════════════════════════════════ LEADERSHIP PRINCIPLES -->
+  <section id="principles" style="position:relative;z-index:1;padding:96px 24px;max-width:1200px;margin:0 auto;" class="reveal">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-tag">Amazon Culture</span>
+      <h2 style="font-family:var(--font-heading);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-0.025em;margin-top:16px;">All 16 Leadership<br/><span class="gradient-text">Principles.</span></h2>
+      <p style="color:rgba(238,238,248,0.45);margin-top:12px;font-size:16px;max-width:500px;margin-left:auto;margin-right:auto;">Every behavioral question maps to an LP. Know them cold &mdash; not just the names, but the nuance.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;">
+      {lps.map(lp => (
+        <details style="background:#0c0c14;" class="lp-card">
+          <summary style="list-style:none;padding:22px 24px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;">
+            <span style="font-family:var(--font-mono);font-size:11px;color:rgba(255,153,0,0.5);padding-top:3px;flex-shrink:0;min-width:24px;">{String(lp.id).padStart(2,'0')}</span>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:#eeeef8;">{lp.name}</div>
+              <div style="font-size:12px;color:rgba(238,238,248,0.4);margin-top:3px;font-style:italic;">{lp.tagline}</div>
+            </div>
+            <span style="font-size:18px;color:#FF9900;flex-shrink:0;transition:transform 0.25s;" class="chevron">&or;</span>
+          </summary>
+          <div style="padding:20px 24px 24px 62px;background:rgba(255,153,0,0.02);border-top:1px solid rgba(255,255,255,0.04);">
+            <p style="font-size:13px;color:rgba(238,238,248,0.65);line-height:1.75;margin-bottom:16px;">{lp.description}</p>
+            <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.15);border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+              <p style="font-size:12px;color:#f87171;"><strong>Watch out:</strong> {lp.watchout}</p>
+            </div>
+            <p style="font-size:11px;font-family:var(--font-heading);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,153,0,0.7);margin-bottom:10px;">STAR Story Prompts</p>
+            {lp.starPrompts.map(prompt => (
+              <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">
+                <span style="color:#FF9900;flex-shrink:0;">&loz;</span>
+                <p style="font-size:13px;color:rgba(238,238,248,0.55);line-height:1.5;">{prompt}</p>
+              </div>
+            ))}
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="divline" style="max-width:1200px;margin:0 auto;"></div>
+
+  <!-- ═══════════════════════════════════════ SYSTEM DESIGN -->
+  <section id="design" style="position:relative;z-index:1;padding:96px 24px;max-width:1200px;margin:0 auto;" class="reveal">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-tag">Technical Depth</span>
+      <h2 style="font-family:var(--font-heading);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-0.025em;margin-top:16px;">System Design<br/><span class="gradient-text">Playbook.</span></h2>
+      <p style="color:rgba(238,238,248,0.45);margin-top:12px;font-size:16px;max-width:480px;margin-left:auto;margin-right:auto;">The universal 6-step framework for any system design question.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;margin-bottom:32px;">
+      {[
+        {n:"01",t:"Clarify Requirements",d:"Ask 3-5 scoping questions. Functional vs non-functional requirements. Scale, latency, consistency — clarify before diving in.",c:"#FF9900",bg:"rgba(255,153,0,0.06)"},
+        {n:"02",t:"Capacity Estimation",d:"Back-of-envelope math for req/sec, storage, bandwidth. Order of magnitude is fine. Shows systems thinking at scale.",c:"#f87171",bg:"rgba(248,113,113,0.06)"},
+        {n:"03",t:"API Design",d:"Define core API endpoints before jumping to architecture. Aligns on scope and surfaces assumptions early.",c:"#818cf8",bg:"rgba(129,140,248,0.06)"},
+        {n:"04",t:"High-Level Architecture",d:"Draw the main components: load balancers, services, databases, caches, CDN. Walk through a key user flow.",c:"#2dd4bf",bg:"rgba(45,212,191,0.06)"},
+        {n:"05",t:"Component Deep Dive",d:"Pick 2-3 components to go deep: DB schema, cache strategy, replication, consistency model, message queues.",c:"#4ade80",bg:"rgba(74,222,128,0.06)"},
+        {n:"06",t:"Trade-offs & Bottlenecks",d:"Every design choice has trade-offs. Name them. SQL vs NoSQL, consistency vs availability, push vs pull.",c:"#fbbf24",bg:"rgba(251,191,36,0.06)"},
+      ].map(step => (
+        <div style={`padding:28px 24px;background:radial-gradient(ellipse 100% 80% at 0% 0%,${step.bg},transparent),#0c0c14;`}>
+          <div style={`font-family:var(--font-mono);font-size:11px;color:${step.c};margin-bottom:8px;`}>STEP {step.n}</div>
+          <div style={`font-family:var(--font-heading);font-weight:700;font-size:15px;color:${step.c};margin-bottom:10px;`}>{step.t}</div>
+          <p style="font-size:13px;color:rgba(238,238,248,0.5);line-height:1.65;">{step.d}</p>
+        </div>
+      ))}
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+      {[
+        {i:"⚡",l:"CAP Theorem",d:"Consistency, Availability, Partition Tolerance — pick two. Know which to sacrifice for your use case."},
+        {i:"🔑",l:"Consistent Hashing",d:"Distribute data with minimal re-distribution when nodes join or leave. Essential for distributed caches."},
+        {i:"📦",l:"Event Sourcing",d:"Store state as immutable events. Enables audit logs, replay, and decoupled downstream consumers."},
+        {i:"🔄",l:"CQRS",d:"Separate read and write models. Optimize each path independently — critical at Amazon's scale."},
+        {i:"🛡️",l:"Circuit Breaker",d:"Fail fast when a downstream service is unavailable. Prevents cascading failures in microservice chains."},
+        {i:"📊",l:"Rate Limiting",d:"Token bucket, leaky bucket, sliding window. Know each algorithm's trade-offs for different traffic patterns."},
+        {i:"🗂️",l:"Database Sharding",d:"Horizontal partition data. Eliminates single-node limits but introduces cross-shard query complexity."},
+        {i:"🌐",l:"CDN Strategy",d:"Push static assets to edge nodes. Reduces origin load and latency for global users at massive scale."},
+      ].map(c => (
+        <div style="padding:18px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='rgba(255,153,0,0.25)';this.style.background='rgba(255,153,0,0.04)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='rgba(255,255,255,0.02)'">
+          <div style="font-size:20px;margin-bottom:8px;">{c.i}</div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:#eeeef8;margin-bottom:6px;">{c.l}</div>
+          <p style="font-size:12px;color:rgba(238,238,248,0.4);line-height:1.55;">{c.d}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="divline" style="max-width:1200px;margin:0 auto;"></div>
+
+  <!-- ═══════════════════════════════════════ RESOURCES -->
+  <section id="resources" style="position:relative;z-index:1;padding:96px 24px;max-width:1200px;margin:0 auto;" class="reveal">
+    <div style="text-align:center;margin-bottom:56px;">
+      <span class="section-tag">Go Deeper</span>
+      <h2 style="font-family:var(--font-heading);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-0.025em;margin-top:16px;">Essential Resources.</h2>
+      <p style="color:rgba(238,238,248,0.45);margin-top:12px;font-size:16px;">The books and frameworks that separate good from great.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;margin-bottom:32px;">
+      {[
+        {e:"📖",t:"Cracking the PM Interview",a:"McDowell & Bavaro",d:"The definitive PM interview prep book. Product design, estimation, and behavioral frameworks."},
+        {e:"🚀",t:"The Lean Startup",a:"Eric Ries",d:"Build-Measure-Learn. How to think about MVP, pivots, and validated learning — critical for product sense rounds."},
+        {e:"🎯",t:"Working Backwards",a:"Colin Bryar & Bill Carr",d:"Inside Amazon's PR/FAQ and 6-pager process. Learn to think like an Amazonian from day one."},
+        {e:"⚙️",t:"Designing Data-Intensive Apps",a:"Martin Kleppmann",d:"The bible of distributed systems. Required reading before any system design round at Amazon."},
+        {e:"🧠",t:"Thinking in Bets",a:"Annie Duke",d:"Decision-making under uncertainty. Directly applies to Are Right, A Lot and Bias for Action LPs."},
+        {e:"🌊",t:"An Elegant Puzzle",a:"Will Larson",d:"Engineering management at scale &mdash; org design, migrations, team health. TPM mindset in one book."},
+      ].map(book => (
+        <div style="padding:28px 24px;background:#0c0c14;border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div style="font-size:28px;margin-bottom:14px;">{book.e}</div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:#eeeef8;margin-bottom:4px;">{book.t}</div>
+          <div style="font-size:11px;color:#FF9900;font-family:var(--font-heading);font-weight:600;margin-bottom:10px;">{book.a}</div>
+          <p style="font-size:13px;color:rgba(238,238,248,0.45);line-height:1.65;" set:html={book.d}></p>
+        </div>
+      ))}
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      {[
+        {name:"STAR Method",color:"#FF9900",desc:"Situation &rarr; Task &rarr; Action &rarr; Result. The universal behavioral format at Amazon. Keep Result as 2x the length of the rest combined."},
+        {name:"CIRCLES Method",color:"#f87171",desc:"Comprehend &rarr; Identify customers &rarr; Report needs &rarr; Cut scope &rarr; List solutions &rarr; Evaluate &rarr; Summarize. PM product design framework."},
+        {name:"Working Backwards",color:"#818cf8",desc:"Write the press release first. Define the customer experience before touching architecture. Amazon&rsquo;s innovation process inside out."},
+      ].map(f => (
+        <div style={`padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-left:3px solid ${f.color};border-radius:14px;`}>
+          <div style={`font-family:var(--font-heading);font-weight:700;font-size:16px;color:${f.color};margin-bottom:10px;`}>{f.name}</div>
+          <p style="font-size:13px;color:rgba(238,238,248,0.5);line-height:1.65;" set:html={f.desc}></p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ BOTTOM CTA -->
+  <section style="position:relative;z-index:1;padding:80px 24px 120px;text-align:center;">
+    <div class="divline" style="max-width:1200px;margin:0 auto 80px;"></div>
+    <span class="section-tag">You&rsquo;re ready</span>
+    <h2 style="font-family:var(--font-heading);font-size:clamp(32px,5vw,60px);font-weight:800;letter-spacing:-0.025em;margin-top:20px;margin-bottom:16px;">Ready to practice?</h2>
+    <p style="color:rgba(238,238,248,0.45);margin-bottom:40px;font-size:16px;max-width:400px;margin-left:auto;margin-right:auto;">Launch a round and simulate the real thing &mdash; timer, hints, self-rating, and a final score.</p>
+    <PracticeModal client:only="react" />
+  </section>
+
+  <!-- ═══════════════════════════════════════ FOOTER -->
+  <footer style="position:relative;z-index:1;padding:28px 48px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <span style="font-family:var(--font-heading);font-size:14px;color:rgba(238,238,248,0.3);">TPM Prep &mdash; Built for Amazon interviews</span>
+    <span style="font-size:12px;color:rgba(238,238,248,0.2);">Study hard. Ship fast. &nbsp;&#x2B21;</span>
+  </footer>
+</BaseLayout>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll<HTMLElement>(".reveal");
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visible"); revealObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // Accordion chevron
+  document.querySelectorAll<HTMLDetailsElement>("details").forEach(d => {
+    d.addEventListener("toggle", () => {
+      const chevron = d.querySelector<HTMLElement>(".chevron");
+      if (chevron) chevron.style.transform = d.open ? "rotate(180deg)" : "none";
+    });
+  });
+
+  // Sticky nav
+  const nav = document.getElementById("nav");
+  window.addEventListener("scroll", () => {
+    if (nav) nav.style.background = window.scrollY > 20 ? "rgba(6,6,10,0.9)" : "rgba(6,6,10,0.6)";
+  }, { passive: true });
+</script>
