@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { rounds, type Round, type Question } from "../data/rounds";
 
@@ -142,6 +143,7 @@ export default function PracticeModal() {
         Start Practice Session →
       </button>
 
+      {typeof document !== "undefined" && createPortal(
       <AnimatePresence>
         {open && (
           <motion.div
@@ -419,7 +421,9 @@ export default function PracticeModal() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+      )}
     </>
   );
 }
