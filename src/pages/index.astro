@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import StarField from "../components/StarField";
 import CustomCursor from "../components/CustomCursor";
 import HeroSection from "../components/HeroSection";
 import PracticeModal from "../components/PracticeModal";
@@ -12,7 +11,6 @@ const lpNames = lps.map(l => l.name);
 ---
 
 <BaseLayout>
-  <StarField client:only="react" />
   <CustomCursor client:only="react" />
 
   <!-- ═══ NAV ═══════════════════════════════════════════════════ -->
